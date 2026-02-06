@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeteriamangement.Controller">
    <children>
       <BorderPane layoutX="81.0" layoutY="185.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -70,6 +70,18 @@
                </children>
             </AnchorPane>
          </top>
+         <center>
+            <VBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="menuSwitchBtn" onAction="#handleMenuSwitch" prefHeight="40" prefWidth="180" styleClass="leftside-button" text="Breakfast Menu" />
+                  <!-- Menu Items Will Appear Here -->
+
+               </children>
+               <padding>
+                  <Insets top="25.0" />
+               </padding>
+            </VBox>
+         </center>
          <right>
             <AnchorPane prefHeight="499.0" prefWidth="253.0" stylesheets="@menuDesign.css" BorderPane.alignment="CENTER">
                <children>
