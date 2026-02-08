@@ -53,7 +53,7 @@
          <top>
             <AnchorPane prefHeight="101.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" layoutX="332.0" layoutY="1.0" prefHeight="100.0" prefWidth="300.0" styleClass="gradient" stylesheets="@menuDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+                  <HBox alignment="CENTER" layoutX="332.0" layoutY="1.0" prefHeight="113.0" prefWidth="1000.0" styleClass="gradient" stylesheets="@menuDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
                      <children>
                         <Label prefHeight="60.0" prefWidth="136.0" text="RUET">
                            <font>
@@ -73,12 +73,12 @@
          <center>
             <VBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="menuSwitchBtn" onAction="#handleMenuSwitch" prefHeight="40" prefWidth="180" styleClass="leftside-button" text="Breakfast Menu" />
+                  <Button fx:id="menuSwitchBtn" onAction="#handleMenuSwitch" prefHeight="40" prefWidth="144.0" styleClass="leftside-button" stylesheets="@menuDesign.css" text="Breakfast Menu" textFill="WHITE" />
                   <!-- Menu Items Will Appear Here -->
 
                </children>
                <padding>
-                  <Insets top="25.0" />
+                  <Insets top="5.0" />
                </padding>
             </VBox>
          </center>
