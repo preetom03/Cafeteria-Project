@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -18,10 +15,20 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+    @FXML
+    private Label changeAmount;
+
+    @FXML
+    private Label totalAmount;
+
+    @FXML
+    private TextField payAmount;
+
     @FXML
     private FlowPane flowpane;
 
@@ -74,6 +81,8 @@ public class Controller implements Initializable {
     private ObservableList<OrderItem> orderList =
             FXCollections.observableArrayList();
 
+    double totalPayment = 0; //The Total amount that need to be paid for orders
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         itemColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -101,12 +110,23 @@ public class Controller implements Initializable {
             throw new RuntimeException(e);
         }
     }
-    public void addItemToTable(Item item, int quantity){
+    public void addItemToTable(Item item, int quantity){ //Adds item information to table
         double total = item.getPrice() * quantity;
 
         OrderItem order =
                 new OrderItem(item.getName(), quantity, total);
 
+        totalPayment += total;
+
+        totalAmount.setText(String.valueOf(totalPayment) + Main.Currency);
+
         orderList.add(order);
+    }
+
+    @FXML
+    private void confirmPayment(){ // for confirm button of payment
+        double totalPaid = Double.parseDouble(payAmount.getText());
+        double change = totalPaid - totalPayment;
+        changeAmount.setText(String.valueOf(change) +  Main.Currency);
     }
 }
