@@ -111,21 +111,24 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="195.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="195.0">
                            <children>
                               <Label prefHeight="22.0" prefWidth="57.0" text="Total: ">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="0 Tk">
+                              <Label fx:id="totalAmount" text="0 Tk">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
                               </Label>
                            </children>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="195.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="195.0">
                            <children>
                               <Label prefHeight="22.0" prefWidth="37.0" text="Pay: ">
                                  <font>
@@ -135,29 +138,43 @@
                                     <Insets />
                                  </opaqueInsets>
                                  <HBox.margin>
-                                    <Insets left="50.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Label>
-                              <TextField prefHeight="25.0" prefWidth="80.0" promptText="0.00 Tk">
+                              <TextField fx:id="payAmount" prefHeight="25.0" prefWidth="80.0" promptText="0.00 Tk">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
                               </TextField>
+                              <Button mnemonicParsing="false" onAction="#confirmPayment" styleClass="pay-button" stylesheets="@menuDesign.css" text="Confirm" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="14.0" />
+                                 </font>
+                              </Button>
                            </children>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="195.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="195.0">
                            <children>
                               <Label prefHeight="22.0" prefWidth="71.0" text="Change: ">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
                               </Label>
-                              <Label prefHeight="22.0" prefWidth="51.0" text="0 Tk">
+                              <Label fx:id="changeAmount" text="0 Tk">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
                               </Label>
                            </children>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="195.0">
                            <children>
