@@ -25,6 +25,13 @@ public class ItemController implements Initializable {
     private Spinner<Integer> itemQuantity;
 
     private Item item;
+
+    private Controller mainController;
+
+    public void setMainController(Controller controller){
+        this.mainController = controller;
+    }
+
     public void setData(Item item){
         this.item = item;
         itemName.setText(item.getName());
@@ -36,8 +43,12 @@ public class ItemController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10);
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10);
         valueFactory.setValue(1);
         itemQuantity.setValueFactory(valueFactory);
+    }
+    public void handleAdd(){
+        int quantity = itemQuantity.getValue();
+        mainController.addItemToTable(item, quantity);
     }
 }
