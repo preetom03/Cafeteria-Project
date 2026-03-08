@@ -36,8 +36,8 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="43.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Spinner prefHeight="25.0" prefWidth="134.0" />
-                  <Button mnemonicParsing="false" text="add" />
+                  <Spinner fx:id="itemQuantity" prefHeight="25.0" prefWidth="134.0" />
+                  <Button fx:id="addItemButton" mnemonicParsing="false" text="add" />
                </children>
             </HBox>
          </bottom>
