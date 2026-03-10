@@ -14,10 +14,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Controller implements Initializable {
     @FXML
@@ -123,10 +120,68 @@ public class Controller implements Initializable {
         orderList.add(order);
     }
 
+    private Order currentOrder; // for tracking order details
+
     @FXML
-    private void confirmPayment(){ // for confirm button of payment
+    private void handleConfirm(){ // for Confirm button
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Customer Info");
+        dialog.setHeaderText("Enter Customer Name");
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(name ->{
+            double total = calculateTotal();
+            Order order = new Order(name, total);
+            currentOrder = order;
+
+            // For testing only*
+            System.out.println("Order created");
+            System.out.println("Order ID: " + order.getOrderId());
+            System.out.println("Name    : " + name);
+            System.out.println("Total   : " + total);
+        });
+    }
+
+    private double calculateTotal(){
+        double total = 0;
+        for(OrderItem item: orderList){
+            total += item.getTotalPrice();
+        }
+        return total;
+    }
+
+    private void orderReceipt(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Order Receipt");
+        alert.setHeaderText("Order # " + currentOrder.getOrderId());
+
+        alert.setContentText(currentOrder.getOrderDetails());
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handlePay(){  // for Pay button
+        if(payAmount.getText().isEmpty()){
+            showError("Please enter a payment amount");
+            return;
+        }
+
         double totalPaid = Double.parseDouble(payAmount.getText());
         double change = totalPaid - totalPayment;
+        if(change < 0){
+            showError("Insufficient amount!\nPlease enter a  valid amount.");
+            return;
+        }
         changeAmount.setText(String.valueOf(change) +  Main.Currency);
+        orderReceipt();
+    }
+    private void showError(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Payment Error!");
+        alert.setHeaderText("Payment failed!");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
