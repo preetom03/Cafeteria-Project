@@ -149,7 +149,7 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button mnemonicParsing="false" onAction="#confirmPayment" styleClass="pay-button" stylesheets="@menuDesign.css" text="Confirm" textFill="WHITE">
+                              <Button mnemonicParsing="false" onAction="#handleConfirm" styleClass="pay-button" stylesheets="@menuDesign.css" text="Confirm" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="14.0" />
                                  </font>
@@ -178,7 +178,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="48.0" prefWidth="195.0">
                            <children>
-                              <Button mnemonicParsing="false" prefWidth="70.0" styleClass="pay-button" stylesheets="@menuDesign.css" text="Pay" textFill="WHITE">
+                              <Button mnemonicParsing="false" onAction="#handlePay" prefWidth="70.0" styleClass="pay-button" stylesheets="@menuDesign.css" text="Pay" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="14.0" />
                                  </font>
