@@ -48,6 +48,9 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    private Button payButton;
+
+    @FXML
     private TableView<OrderItem> orderTable;
 
     @FXML
@@ -87,6 +90,8 @@ public class Controller implements Initializable {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
 
         orderTable.setItems(orderList);
+
+        payButton.setDisable(true);
 
         items.addAll(getData());
         int column = 0;
@@ -136,6 +141,8 @@ public class Controller implements Initializable {
             Order order = new Order(name, total);
             currentOrder = order;
 
+            payButton.setDisable(false);
+
             // For testing only*
             System.out.println("Order created");
             System.out.println("Order ID: " + order.getOrderId());
@@ -176,7 +183,21 @@ public class Controller implements Initializable {
         }
         changeAmount.setText(String.valueOf(change) +  Main.Currency);
         orderReceipt();
+        resetOrder(); // clearing order table
     }
+
+    private void resetOrder(){ // resetting order after each payment
+        orderList.clear();
+        totalAmount.setText("");
+        totalPayment = 0;
+
+        payAmount.clear();
+        changeAmount.setText("");
+        currentOrder = null;
+
+        payButton.setDisable(true);
+    }
+
     private void showError(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Payment Error!");
