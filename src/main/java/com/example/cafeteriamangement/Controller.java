@@ -51,6 +51,9 @@ public class Controller implements Initializable {
     private Button payButton;
 
     @FXML
+    private Button confirmButton;
+
+    @FXML
     private TableView<OrderItem> orderTable;
 
     @FXML
@@ -92,6 +95,7 @@ public class Controller implements Initializable {
         orderTable.setItems(orderList);
 
         payButton.setDisable(true);
+        confirmButton.setDisable(false);
 
         items.addAll(getData());
         int column = 0;
@@ -142,6 +146,7 @@ public class Controller implements Initializable {
             currentOrder = order;
 
             payButton.setDisable(false);
+            confirmButton.setDisable(true);
 
             // For testing only*
             System.out.println("Order created");
@@ -175,7 +180,14 @@ public class Controller implements Initializable {
             return;
         }
 
-        double totalPaid = Double.parseDouble(payAmount.getText());
+        double totalPaid;
+        try {
+            totalPaid = Double.parseDouble(payAmount.getText());
+        }
+        catch (NumberFormatException e){
+            showError("Please enter a valid payment amount.");
+            return;
+        }
         double change = totalPaid - totalPayment;
         if(change < 0){
             showError("Insufficient amount!\nPlease enter a  valid amount.");
@@ -196,6 +208,7 @@ public class Controller implements Initializable {
         currentOrder = null;
 
         payButton.setDisable(true);
+        confirmButton.setDisable(false);
     }
 
     private void showError(String message){
