@@ -2,15 +2,20 @@ package com.example.cafeteriamangement;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,6 +57,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Button confirmButton;
+
+    @FXML
+    private Button clearButton;
 
     @FXML
     private TableView<OrderItem> orderTable;
@@ -116,6 +124,18 @@ public class Controller implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
+    @FXML
+    public void switchAdmin(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("admin.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setMaximized(true);
+        stage.show();
+    }
+
     public void addItemToTable(Item item, int quantity){ //Adds item information to table
         double total = item.getPrice() * quantity;
 
@@ -196,6 +216,11 @@ public class Controller implements Initializable {
         changeAmount.setText(String.valueOf(change) +  Main.Currency);
         orderReceipt();
         resetOrder(); // clearing order table
+    }
+
+    @FXML
+    private void handleClear(){ // clearing order
+        resetOrder();
     }
 
     private void resetOrder(){ // resetting order after each payment
