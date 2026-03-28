@@ -168,11 +168,13 @@ public class Controller implements Initializable {
             payButton.setDisable(false);
             confirmButton.setDisable(true);
 
+            /*
             // For testing only*
             System.out.println("Order created");
             System.out.println("Order ID: " + order.getOrderId());
             System.out.println("Name    : " + name);
             System.out.println("Total   : " + total);
+            */
         });
     }
 
@@ -214,6 +216,9 @@ public class Controller implements Initializable {
             return;
         }
         changeAmount.setText(String.valueOf(change) +  Main.Currency);
+
+        OrderStore.addOrder(currentOrder); // storing the order after pay
+
         orderReceipt();
         resetOrder(); // clearing order table
     }
