@@ -5,6 +5,12 @@ public class Item {
     private String imgsrc;
     private double price;
 
+
+    public Item(String name, double price,  String imgsrc) {
+        this.name = name;
+        this.price = price;
+        this.imgsrc = imgsrc;
+    }
     public String getName() {
         return name;
     }

@@ -33,11 +33,7 @@ public class AdminController implements Initializable{
     public void switchMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setMaximized(false);
-        stage.setMaximized(true);
-        stage.show();
+        stage.getScene().setRoot(root);
     }
 
     @Override

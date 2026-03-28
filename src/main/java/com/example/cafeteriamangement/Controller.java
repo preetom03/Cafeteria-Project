@@ -76,17 +76,17 @@ public class Controller implements Initializable {
     private List<Item> items = new ArrayList<>();
 
     private List<Item> getData(){
-        List<Item> items = new ArrayList<>();
-        Item item;
-        for(int i = 0; i<20; i++){
-            item = new Item();
-            item.setName("Sandwich");
-            item.setPrice(30);
-            item.setImgsrc("/images/test.png");
-            items.add(item);
-        }
-
-        return items;
+        return List.of(
+                new Item("Khichuri", 20, "/images/khichuri.jpg"),
+                new Item("Luchi", 7, "/images/luchi.jpeg"),
+                new Item("Alu bhorta", 7, "/images/alu_bhorta.jpg"),
+                new Item("Dim bhaji", 20, "/images/dim_bhaji.jpeg"),
+                new Item("Shobji", 10, "/images/shobji.jpg"),
+                new Item("Buter daal", 10, "/images/buter_daal.jpg"),
+                new Item("Shingara", 6, "/images/shingara.jpg"),
+                new Item("Dim chop", 10, "/images/dim_chop.jpg"),
+                new Item("Alur chop", 7,  "/images/alur_chop.jpg")
+        );
     }
 
     private ObservableList<OrderItem> orderList =
@@ -129,11 +129,7 @@ public class Controller implements Initializable {
     public void switchAdmin(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("admin.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setMaximized(false);
-        stage.setMaximized(true);
-        stage.show();
+        stage.getScene().setRoot(root);
     }
 
     public void addItemToTable(Item item, int quantity){ //Adds item information to table
