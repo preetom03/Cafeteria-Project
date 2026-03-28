@@ -38,7 +38,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="62.0" prefWidth="153.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" stylesheets="@menuDesign.css" text="Admin" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#switchAdmin" prefHeight="40.0" prefWidth="90.0" stylesheets="@menuDesign.css" text="Admin" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -183,7 +183,7 @@
                                     <Font name="Cambria" size="14.0" />
                                  </font>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="68.0" styleClass="pay-button" stylesheets="@menuDesign.css" text="Clear" textFill="WHITE">
+                              <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClear" prefHeight="28.0" prefWidth="68.0" styleClass="pay-button" stylesheets="@menuDesign.css" text="Clear" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets left="30.0" />
                                  </HBox.margin>

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeteriamangement.Controller">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeteriamangement.AdminController">
    <children>
       <BorderPane layoutX="81.0" layoutY="185.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -24,7 +24,7 @@
                   <Pane prefHeight="151.0" prefWidth="153.0" />
                   <HBox alignment="CENTER" prefHeight="71.0" prefWidth="153.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" stylesheets="@menuDesign.css" text="Menu" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#switchMenu" prefHeight="40.0" prefWidth="90.0" stylesheets="@menuDesign.css" text="Menu" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -74,11 +74,15 @@
          <center>
             <VBox alignment="TOP_CENTER" spacing="20.0" stylesheets="@menuDesign.css" BorderPane.alignment="CENTER">
                <children>
-                  <TableView prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="orderTable" prefHeight="200.0" prefWidth="825.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="idColumn" prefWidth="100.0" text="Order ID" />
+                      <TableColumn fx:id="nameColumn" prefWidth="200.0" text="Customer" />
+                      <TableColumn fx:id="totalColumn" prefWidth="100.0" text="Total" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                   <ScrollPane fx:id="scroll" fitToWidth="true" prefHeight="441.0" prefWidth="594.0" styleClass="transparent" stylesheets="@menuDesign.css">
                      <content>
