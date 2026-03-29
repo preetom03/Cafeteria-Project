@@ -35,24 +35,6 @@ public class Controller implements Initializable {
     private FlowPane flowpane;
 
     @FXML
-    private Button menuSwitchBtn;
-
-    @FXML
-    private ScrollPane scroll;
-    private boolean breakfastMode = true;
-
-    @FXML
-    private void handleMenuSwitch(){
-        if(breakfastMode){
-            menuSwitchBtn.setText("Lunch Menu");
-        }
-        else{
-            menuSwitchBtn.setText("Breakfast Menu");
-        }
-        breakfastMode = !breakfastMode;
-    }
-
-    @FXML
     private Button payButton;
 
     @FXML
@@ -75,9 +57,10 @@ public class Controller implements Initializable {
 
     private List<Item> items = new ArrayList<>();
 
-    private List<Item> getData(){
+    private List<Item> getBreakfastData(){
         return List.of(
-                new Item("Khichuri", 20, "/images/khichuri.jpg"),
+                new Item("Khichuri - 1 plate", 20, "/images/khichuri.jpg"),
+                new Item("Khichuri - 1/2 plate", 15, "/images/khichuri.jpg"),
                 new Item("Luchi", 7, "/images/luchi.jpeg"),
                 new Item("Alu bhorta", 7, "/images/alu_bhorta.jpg"),
                 new Item("Dim bhaji", 20, "/images/dim_bhaji.jpeg"),
@@ -88,7 +71,49 @@ public class Controller implements Initializable {
                 new Item("Alur chop", 7,  "/images/alur_chop.jpg")
         );
     }
+    private List<Item> getLunchData(){
+        return List.of(
+            new Item("Shada bhat - 1 plate", 15, "/images/shada_bhat.jpg"),
+            new Item("Shada bhat - 1/2 plate", 10, "/images/shada_bhat.jpg"),
+            new Item("Polao - 1 plate", 30, "/images/polao.jpg"),
+            new Item("Polao - 1/2 plate", 20, "/images/polao.jpg"),
+            new Item("Chicken roast", 50, "/images/chicken_roast.jpg"),
+            new Item("Broiler chicken", 35, "/images/broiler_chicken.jpg"),
+            new Item("Boiled egg", 25, "/images/boiled_egg.jpg"),
+            new Item("Shobji", 10, "/images/shobji.jpg"),
+            new Item("Patla daal", 10, "/images/patla_daal.jpg"),
+            new Item("Beef - 5 pieces", 100, "/images/gorur_mangsho.jpg"),
+            new Item("Beef - 3 pieces", 70, "/images/gorur_mangsho.jpg")
+        );
+    }
 
+    private void loadItem(List<Item>newItems){
+        items.clear();
+        items.addAll(newItems);
+
+        flowpane.getChildren().clear();
+
+        try {
+            for(Item item: items) {
+                FXMLLoader fxmlloader = new FXMLLoader();
+                fxmlloader.setLocation(getClass().getResource("itemCard.fxml"));
+
+                AnchorPane anchorPane = fxmlloader.load();
+                ItemController itemController = fxmlloader.getController();
+                itemController.setData(item);
+                itemController.setMainController(this);
+                flowpane.getChildren().add(anchorPane);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void switchtoBreakfast(ActionEvent actionEvent) throws IOException {
+        loadItem(getBreakfastData());
+    }
+    public void switchtoLunch(ActionEvent event) throws IOException {
+        loadItem(getLunchData());
+    }
     private ObservableList<OrderItem> orderList =
             FXCollections.observableArrayList();
 
@@ -104,25 +129,10 @@ public class Controller implements Initializable {
 
         payButton.setDisable(true);
         confirmButton.setDisable(false);
-
-        items.addAll(getData());
         int column = 0;
         int row = 0;
-        try {
-            for(Item item: items) {
-                FXMLLoader fxmlloader = new FXMLLoader();
-                fxmlloader.setLocation(getClass().getResource("itemCard.fxml"));
 
-                AnchorPane anchorPane = fxmlloader.load();
-                ItemController itemController = fxmlloader.getController();
-                itemController.setData(item);
-                itemController.setMainController(this);
-
-                flowpane.getChildren().add(anchorPane);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadItem(getBreakfastData());
     }
 
     @FXML
@@ -211,7 +221,7 @@ public class Controller implements Initializable {
             showError("Insufficient amount!\nPlease enter a  valid amount.");
             return;
         }
-        changeAmount.setText(String.valueOf(change) +  Main.Currency);
+        changeAmount.setText(change +  Main.Currency);
 
         OrderStore.addOrder(currentOrder); // storing the order after pay
 
