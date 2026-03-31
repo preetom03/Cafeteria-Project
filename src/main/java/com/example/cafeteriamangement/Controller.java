@@ -160,6 +160,11 @@ public class Controller implements Initializable {
     @FXML
     private void handleConfirm(){ // for Confirm button
 
+        if(totalPayment == 0){
+            confirmError("Please add item to the menu first");
+            return;
+        }
+
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Customer Info");
         dialog.setHeaderText("Enter Customer Name");
@@ -167,6 +172,10 @@ public class Controller implements Initializable {
         Optional<String> result = dialog.showAndWait();
 
         result.ifPresent(name ->{
+            if(name.isEmpty()){
+                confirmError("Customer Name cannot be empty!");
+                return;
+            }
             double total = calculateTotal();
             Order order = new Order(name, total);
             currentOrder = order;
@@ -251,6 +260,13 @@ public class Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Payment Error!");
         alert.setHeaderText("Payment failed!");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    private void confirmError(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Confirm Error!");
+        alert.setHeaderText("Confirm failed!");
         alert.setContentText(message);
         alert.showAndWait();
     }

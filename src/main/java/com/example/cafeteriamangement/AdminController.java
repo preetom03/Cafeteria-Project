@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -43,5 +44,28 @@ public class AdminController implements Initializable{
         totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
 
         orderTable.setItems(OrderStore.getOrders()); // connecting queue list in the table
+    }
+
+    @FXML
+    private void clearTopOrder() {
+        if(OrderStore.getOrders().isEmpty()){
+            showError("No Order to Complete!");
+        }
+
+        if (!OrderStore.getOrders().isEmpty()) {
+            Order completed = OrderStore.getOrders().remove(0);
+
+            System.out.println("Completed Order ID: " + completed.getOrderId());
+        } else {
+            System.out.println("No orders in queue");
+        }
+    }
+
+    private void showError(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error!");
+        alert.setHeaderText("Clearing order failed!");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

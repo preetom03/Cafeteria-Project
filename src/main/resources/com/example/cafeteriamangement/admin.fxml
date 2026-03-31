@@ -82,7 +82,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Button alignment="CENTER" mnemonicParsing="false" stylesheets="@menuDesign.css" text="Clear top order" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#clearTopOrder" stylesheets="@menuDesign.css" text="Clear top order" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font>
