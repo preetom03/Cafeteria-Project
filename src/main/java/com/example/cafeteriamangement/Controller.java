@@ -6,15 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -87,6 +84,25 @@ public class Controller implements Initializable {
         );
     }
 
+    private List<Item> getFastfoodData(){
+        return List.of(
+                new Item("Burger (Egg)", 35, "/images/egg_burger.jpg"),
+                new Item("Burger (Kima)", 40, "/images/kima_burger.jpg"),
+                new Item("Pizza", 70, "/images/pizza.jpg"),
+                new Item("Shobji Roll", 25, "/images/shobji_roll.jpg"),
+                new Item("Sandwich (Vegetable)", 25, "/images/sandwich.jpg"),
+                new Item("Sandwich (Egg)", 30, "/images/sandwich.jpg")
+        );
+    }
+
+    private List<Item> getBeverageData(){
+        return List.of(
+                new Item("Red Tea", 7, "/images/red_tea.jpg"),
+                new Item("Milk Tea", 10, "/images/milk_tea.jpg"),
+                new Item("Coffee", 20, "/images/coffee.jpg")
+        );
+    }
+
     private void loadItem(List<Item>newItems){
         items.clear();
         items.addAll(newItems);
@@ -108,11 +124,19 @@ public class Controller implements Initializable {
             throw new RuntimeException(e);
         }
     }
-    public void switchtoBreakfast(ActionEvent actionEvent) throws IOException {
+    public void switchToBreakfast(ActionEvent actionEvent) throws IOException {
         loadItem(getBreakfastData());
     }
-    public void switchtoLunch(ActionEvent event) throws IOException {
+    public void switchToLunch(ActionEvent event) throws IOException {
         loadItem(getLunchData());
+    }
+
+    public void switchToFastfood(ActionEvent actionEvent) throws IOException {
+        loadItem(getFastfoodData());
+    }
+
+    public void switchToBeverages(ActionEvent actionEvent) throws IOException {
+        loadItem(getBeverageData());
     }
     private ObservableList<OrderItem> orderList =
             FXCollections.observableArrayList();
