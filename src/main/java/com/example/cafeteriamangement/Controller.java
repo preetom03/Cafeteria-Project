@@ -12,6 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -235,31 +240,51 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void handlePay(){  // for Pay button
-        if(payAmount.getText().isEmpty()){
-            showError("Please enter a payment amount");
+    private void handlePay() {
+        if (totalPayment == 0) {
+            showError("No items in the order to pay for.");
             return;
         }
 
-        double totalPaid;
-        try {
-            totalPaid = Double.parseDouble(payAmount.getText());
-        }
-        catch (NumberFormatException e){
-            showError("Please enter a valid payment amount.");
+
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+
+
+        String paymentUrl = getSSLCommerzPaymentUrl(totalPayment);
+
+        if (paymentUrl == null) {
+            showError("Could not connect to payment gateway. Try again.");
             return;
         }
-        double change = totalPaid - totalPayment;
-        if(change < 0){
-            showError("Insufficient amount!\nPlease enter a  valid amount.");
-            return;
-        }
-        changeAmount.setText(change +  Main.Currency);
 
-        OrderStore.addOrder(currentOrder); // storing the order after pay
+        webEngine.load(paymentUrl);
 
-        orderReceipt();
-        resetOrder(); // clearing order table
+        VBox layout = new VBox(webView);
+        Scene paymentScene = new Scene(layout, 800, 600);
+
+        Stage paymentStage = new Stage();
+        paymentStage.setTitle("Online Payment - SSLCommerz");
+        paymentStage.setScene(paymentScene);
+        paymentStage.initModality(Modality.APPLICATION_MODAL);
+
+        webEngine.locationProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (newValue.contains("http://localhost/success")) {
+                paymentStage.close();
+                changeAmount.setText("Paid Online");
+                OrderStore.addOrder(currentOrder);
+                orderReceipt();
+                resetOrder();
+
+            }
+            else if (newValue.contains("http://localhost/fail") || newValue.contains("http://localhost/cancel")) {
+                paymentStage.close();
+                showError("Payment Failed or Cancelled by User!");
+            }
+        });
+
+        paymentStage.show();
     }
 
     @FXML
@@ -287,6 +312,57 @@ public class Controller implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private String getSSLCommerzPaymentUrl(double amount) {
+        String storeId = "srlco69ce77aadafd5";
+        String storePass = "srlco69ce77aadafd5@ssl";
+
+        String tranId = "RUET_CAFE_" + System.currentTimeMillis();
+
+        String customerName = "Customer";
+        if (currentOrder != null && currentOrder.getCustomerName() != null) {
+            customerName = currentOrder.getCustomerName();
+        }
+
+        String postData = "store_id=" + storeId +
+                "&store_passwd=" + storePass +
+                "&total_amount=" + amount +
+                "&currency=BDT" +
+                "&tran_id=" + tranId +
+                "&success_url=http://localhost/success" +
+                "&fail_url=http://localhost/fail" +
+                "&cancel_url=http://localhost/cancel" +
+                "&cus_name=" + customerName +
+                "&cus_email=student@ruet.ac.bd" +
+                "&cus_add1=Rajshahi" +
+                "&cus_phone=01700000000" +
+                "&shipping_method=NO" +
+                "&product_name=Cafeteria Order Automation" +
+                "&product_category=Food" +
+                "&product_profile=general";
+
+        try {
+            java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                    .uri(java.net.URI.create("https://sandbox.sslcommerz.com/gwprocess/v4/api.php"))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(java.net.http.HttpRequest.BodyPublishers.ofString(postData))
+                    .build();
+
+            java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+            org.json.JSONObject jsonObject = new org.json.JSONObject(response.body());
+            if (jsonObject.getString("status").equals("SUCCESS")) {
+                return jsonObject.getString("GatewayPageURL");
+            } else {
+                System.out.println("API Error: " + jsonObject.getString("failedreason"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void confirmError(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Confirm Error!");
