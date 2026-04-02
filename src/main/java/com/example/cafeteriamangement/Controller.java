@@ -28,7 +28,13 @@ public class Controller implements Initializable {
     private Label changeAmount;
 
     @FXML
+    private Label changeText;
+
+    @FXML
     private Label totalAmount;
+
+    @FXML
+    private Label payText;
 
     @FXML
     private TextField payAmount;
@@ -44,6 +50,12 @@ public class Controller implements Initializable {
 
     @FXML
     private Button clearButton;
+
+    @FXML
+    private RadioButton offlineOption;
+
+    @FXML
+    private RadioButton onlineOption;
 
     @FXML
     private TableView<OrderItem> orderTable;
@@ -156,8 +168,14 @@ public class Controller implements Initializable {
 
         orderTable.setItems(orderList);
 
-        payButton.setDisable(true);
         confirmButton.setDisable(false);
+        payButton.setDisable(true);
+        changeAmount.setText("");
+
+        ToggleGroup group = new ToggleGroup();
+        offlineOption.setToggleGroup(group);
+        onlineOption.setToggleGroup(group);
+
         int column = 0;
         int row = 0;
 
@@ -222,14 +240,48 @@ public class Controller implements Initializable {
 
     private Order currentOrder; // for tracking order details
 
+
+    @FXML
+    private void selectOffline(ActionEvent event) {
+        payAmount.setDisable(false);
+        payText.setDisable(false);
+        changeText.setDisable(false);
+        changeAmount.setDisable(false);
+    }
+
+    @FXML
+    private void selectOnline(ActionEvent event) {
+        payAmount.setDisable(true);
+        payText.setDisable(true);
+        changeText.setDisable(true);
+        changeAmount.setDisable(true);
+    }
+
+
     @FXML
     private void handleConfirm(){ // for Confirm button
 
         if(totalPayment == 0){
-            showError("Confirm", "Confirm", "Please add item to the menu first");
+            confirmError("Please add item to the menu first");
             return;
         }
-
+        if(!offlineOption.isSelected() && !onlineOption.isSelected()){
+            confirmError("Please select a Payment option");
+            return;
+        }
+        if(offlineOption.isSelected() && payAmount.getText().isEmpty()){
+            confirmError("Please enter the payment amount");
+            return;
+        }
+        if(offlineOption.isSelected()){
+            String paid = payAmount.getText();
+            if(Double.parseDouble(paid) < totalPayment){
+                showError("Enter a valid payment amount");
+                return;
+            }
+            double change = Double.parseDouble(paid) - totalPayment;
+            changeAmount.setText(String.valueOf(change) + Main.Currency);
+        }
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Customer Info");
         dialog.setHeaderText("Enter Customer Name");
@@ -237,8 +289,8 @@ public class Controller implements Initializable {
         Optional<String> result = dialog.showAndWait();
 
         result.ifPresent(name ->{
-            if(name.isEmpty()){
-                showError("Confirm", "Confirm", "Customer name cannot be empty!");
+            if(name.isEmpty()) {
+                confirmError("Customer Name cannot be empty!");
                 return;
             }
             double total = calculateTotal();
@@ -247,7 +299,8 @@ public class Controller implements Initializable {
 
             payButton.setDisable(false);
             confirmButton.setDisable(true);
-
+            onlineOption.setDisable(true);
+            offlineOption.setDisable(true);
             /*
             // For testing only*
             System.out.println("Order created");
@@ -275,14 +328,7 @@ public class Controller implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
-    private void handlePay() {
-        if (totalPayment == 0) {
-            showError("Payment", "Payment", "No items in the order to pay for.");
-            return;
-        }
-
-
+    public void onlinePayment(){
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
 
@@ -290,7 +336,7 @@ public class Controller implements Initializable {
         String paymentUrl = getSSLCommerzPaymentUrl(totalPayment);
 
         if (paymentUrl == null) {
-            showError("Payment", "Payment", "Could not connect to payment gateway. Try again.");
+            showError("Could not connect to payment gateway. Try again.");
             return;
         }
 
@@ -316,11 +362,30 @@ public class Controller implements Initializable {
             }
             else if (newValue.contains("http://localhost/fail") || newValue.contains("http://localhost/cancel")) {
                 paymentStage.close();
-                showError("Payment", "Payment", "Payment Failed or Cancelled by User!");
+                showError("Payment Failed or Cancelled by User!");
             }
         });
 
         paymentStage.show();
+    }
+
+    public void offlinePayment()
+    {
+        OrderStore.addOrder(currentOrder);
+        orderReceipt();
+        resetOrder();
+    }
+    @FXML
+    private void handlePay() {
+        if(onlineOption.isSelected()){
+            onlinePayment();
+        }
+        else{
+            offlinePayment();
+        }
+
+
+
     }
 
     @FXML
@@ -334,11 +399,25 @@ public class Controller implements Initializable {
         totalPayment = 0;
 
         payAmount.clear();
+        payAmount.setDisable(false);
         changeAmount.setText("");
         currentOrder = null;
 
         payButton.setDisable(true);
         confirmButton.setDisable(false);
+
+        onlineOption.setDisable(false);
+        offlineOption.setDisable(false);
+        offlineOption.setSelected(false);
+        onlineOption.setSelected(false);
+    }
+
+    private void showError(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Payment Error!");
+        alert.setHeaderText("Payment failed!");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private String getSSLCommerzPaymentUrl(double amount) {
@@ -390,7 +469,6 @@ public class Controller implements Initializable {
         }
         return null;
     }
-
     private void showError(String m1, String m2, String m3) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(m1 + " Error!");
@@ -398,5 +476,11 @@ public class Controller implements Initializable {
         alert.setContentText(m3);
         alert.showAndWait();
     }
-
+    private void confirmError(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Confirm Error!");
+        alert.setHeaderText("Confirm failed!");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
