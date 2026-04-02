@@ -166,9 +166,45 @@ public class Controller implements Initializable {
 
     @FXML
     public void switchAdmin(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("admin.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.getScene().setRoot(root);
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Admin Login");
+
+        PasswordField pass = new PasswordField();
+        pass.setPromptText("Enter password");
+        pass.requestFocus();
+
+        Label label = new Label("Enter Admin Password");
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(label, pass);
+        layout.setStyle("-fx-padding: 15; -fx-alignment: center;");
+
+        dialog.getDialogPane().setContent(layout);
+        dialog.getDialogPane().setPrefWidth(250);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return pass.getText();
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(password -> {
+            if (password.equals("32557")) {
+                try {
+                    Parent root = FXMLLoader.load(getClass().getResource("admin.fxml"));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.getScene().setRoot(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showError("System", "Admin Load", "Something went wrong");
+                }
+            } else {
+                showError("Login", null, "Wrong password");
+            }
+        });
     }
 
     public void addItemToTable(Item item, int quantity){ //Adds item information to table
@@ -190,7 +226,7 @@ public class Controller implements Initializable {
     private void handleConfirm(){ // for Confirm button
 
         if(totalPayment == 0){
-            confirmError("Please add item to the menu first");
+            showError("Confirm", "Confirm", "Please add item to the menu first");
             return;
         }
 
@@ -202,7 +238,7 @@ public class Controller implements Initializable {
 
         result.ifPresent(name ->{
             if(name.isEmpty()){
-                confirmError("Customer Name cannot be empty!");
+                showError("Confirm", "Confirm", "Customer name cannot be empty!");
                 return;
             }
             double total = calculateTotal();
@@ -242,7 +278,7 @@ public class Controller implements Initializable {
     @FXML
     private void handlePay() {
         if (totalPayment == 0) {
-            showError("No items in the order to pay for.");
+            showError("Payment", "Payment", "No items in the order to pay for.");
             return;
         }
 
@@ -254,7 +290,7 @@ public class Controller implements Initializable {
         String paymentUrl = getSSLCommerzPaymentUrl(totalPayment);
 
         if (paymentUrl == null) {
-            showError("Could not connect to payment gateway. Try again.");
+            showError("Payment", "Payment", "Could not connect to payment gateway. Try again.");
             return;
         }
 
@@ -280,7 +316,7 @@ public class Controller implements Initializable {
             }
             else if (newValue.contains("http://localhost/fail") || newValue.contains("http://localhost/cancel")) {
                 paymentStage.close();
-                showError("Payment Failed or Cancelled by User!");
+                showError("Payment", "Payment", "Payment Failed or Cancelled by User!");
             }
         });
 
@@ -303,14 +339,6 @@ public class Controller implements Initializable {
 
         payButton.setDisable(true);
         confirmButton.setDisable(false);
-    }
-
-    private void showError(String message){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Payment Error!");
-        alert.setHeaderText("Payment failed!");
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private String getSSLCommerzPaymentUrl(double amount) {
@@ -363,11 +391,12 @@ public class Controller implements Initializable {
         return null;
     }
 
-    private void confirmError(String message){
+    private void showError(String m1, String m2, String m3) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Confirm Error!");
-        alert.setHeaderText("Confirm failed!");
-        alert.setContentText(message);
+        alert.setTitle(m1 + " Error!");
+        alert.setHeaderText(m2 + " failed");
+        alert.setContentText(m3);
         alert.showAndWait();
     }
+
 }
