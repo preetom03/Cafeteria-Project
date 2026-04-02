@@ -49,7 +49,7 @@ public class AdminController implements Initializable{
     @FXML
     private void clearTopOrder() {
         if(OrderStore.getOrders().isEmpty()){
-            showError("No Order to Complete!");
+            showError("Error", "Clearing order failed", "No Order to Complete!");
         }
 
         if (!OrderStore.getOrders().isEmpty()) {
@@ -61,11 +61,11 @@ public class AdminController implements Initializable{
         }
     }
 
-    private void showError(String message){
+    private void showError(String m1, String m2, String m3) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error!");
-        alert.setHeaderText("Clearing order failed!");
-        alert.setContentText(message);
+        alert.setTitle(m1);
+        alert.setHeaderText(m2);
+        alert.setContentText(m3);
         alert.showAndWait();
     }
 }
