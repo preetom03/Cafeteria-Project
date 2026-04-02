@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -156,7 +157,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="195.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="263.0">
                            <children>
                               <Label prefHeight="22.0" prefWidth="57.0" text="Total: ">
                                  <font>
@@ -170,12 +171,47 @@
                               </Label>
                            </children>
                            <padding>
+                              <Insets left="30.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="263.0">
+                           <children>
+                              <Label text="Payment option: ">
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="offlineOption" mnemonicParsing="false" onAction="#selectOffline" text="Offline">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Cambria" size="14.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                           <padding>
                               <Insets left="30.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="195.0">
+                        <HBox prefHeight="36.0" prefWidth="263.0">
                            <children>
-                              <Label prefHeight="22.0" prefWidth="37.0" text="Pay: ">
+                              <RadioButton fx:id="onlineOption" mnemonicParsing="false" onAction="#selectOnline" text="Online">
+                                 <padding>
+                                    <Insets left="150.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="Cambria" size="14.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="195.0">
+                           <padding>
+                              <Insets left="30.0" top="5.0" />
+                           </padding>
+                           <children>
+                              <Label fx:id="payText" prefHeight="22.0" prefWidth="37.0" text="Pay: ">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -186,6 +222,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </Label>
+                              <Label />
                               <TextField fx:id="payAmount" prefHeight="25.0" prefWidth="80.0" promptText="0.00 Tk">
                                  <font>
                                     <Font size="18.0" />
@@ -194,19 +231,11 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#handleConfirm" styleClass="pay-button" stylesheets="@menuDesign.css" text="Confirm" textFill="WHITE">
-                                 <font>
-                                    <Font name="Cambria" size="14.0" />
-                                 </font>
-                              </Button>
                            </children>
-                           <padding>
-                              <Insets left="30.0" />
-                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="195.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="195.0">
                            <children>
-                              <Label prefHeight="22.0" prefWidth="71.0" text="Change: ">
+                              <Label fx:id="changeText" prefHeight="22.0" prefWidth="71.0" text="Change: ">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -221,22 +250,36 @@
                               <Insets left="30.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="195.0">
+                        <HBox prefHeight="41.0" prefWidth="263.0">
                            <children>
+                              <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#handleConfirm" styleClass="pay-button" stylesheets="@menuDesign.css" text="Confirm" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Button>
                               <Button fx:id="payButton" mnemonicParsing="false" onAction="#handlePay" prefWidth="70.0" styleClass="pay-button" stylesheets="@menuDesign.css" text="Pay" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="14.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
                               </Button>
                               <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClear" prefHeight="28.0" prefWidth="68.0" styleClass="pay-button" stylesheets="@menuDesign.css" text="Clear" textFill="WHITE">
-                                 <HBox.margin>
-                                    <Insets left="30.0" />
-                                 </HBox.margin>
                                  <font>
                                     <Font name="Cambria" size="14.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
                               </Button>
                            </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
