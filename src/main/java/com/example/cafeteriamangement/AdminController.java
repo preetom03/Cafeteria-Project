@@ -31,6 +31,9 @@ public class AdminController implements Initializable{
     private TableColumn<Order, Double> totalColumn;
 
     @FXML
+    private TableColumn<Order, String> itemColumn;
+
+    @FXML
     public void switchMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -40,8 +43,9 @@ public class AdminController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+        itemColumn.setCellValueFactory(new PropertyValueFactory<>("itemsAsString"));
 
         orderTable.setItems(OrderStore.getOrders()); // connecting queue list in the table
     }
