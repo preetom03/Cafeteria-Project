@@ -23,4 +23,5 @@ public class OrderItem {
     public double getTotalPrice() {
         return totalPrice;
     }
+
 }

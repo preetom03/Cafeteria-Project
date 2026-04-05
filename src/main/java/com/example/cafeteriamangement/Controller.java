@@ -275,11 +275,19 @@ public class Controller implements Initializable {
         }
         if(offlineOption.isSelected()){
             String paid = payAmount.getText();
-            if(Double.parseDouble(paid) < totalPayment){
-                showError("Enter a valid payment amount");
+            double paidAmount;
+
+            try {
+                paidAmount = Double.parseDouble(paid);
+            } catch (NumberFormatException e) {
+                confirmError("Please enter a valid amount!");
                 return;
             }
-            double change = Double.parseDouble(paid) - totalPayment;
+            if(paidAmount < totalPayment){
+                confirmError("Enter a sufficient payment amount!");
+                return;
+            }
+            double change = paidAmount - totalPayment;
             changeAmount.setText(String.valueOf(change) + Main.Currency);
         }
         TextInputDialog dialog = new TextInputDialog();
@@ -294,7 +302,7 @@ public class Controller implements Initializable {
                 return;
             }
             double total = calculateTotal();
-            Order order = new Order(name, total);
+            Order order = new Order(name, total, new ArrayList<>(orderList));
             currentOrder = order;
 
             payButton.setDisable(false);
@@ -383,8 +391,6 @@ public class Controller implements Initializable {
         else{
             offlinePayment();
         }
-
-
 
     }
 

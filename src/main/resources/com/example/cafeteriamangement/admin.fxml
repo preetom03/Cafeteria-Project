@@ -75,6 +75,7 @@
                   <TableView fx:id="orderTable" prefHeight="800.0" prefWidth="825.0">
                     <columns>
                       <TableColumn fx:id="idColumn" prefWidth="100.0" text="Order ID" />
+                      <TableColumn fx:id="itemColumn" prefWidth="200.0" text = "Items"/>
                       <TableColumn fx:id="nameColumn" prefWidth="200.0" text="Customer" />
                       <TableColumn fx:id="totalColumn" prefWidth="100.0" text="Total" />
                     </columns>
