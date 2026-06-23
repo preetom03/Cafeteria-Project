@@ -34,5 +34,5 @@ This is a desktop-based **Cafeteria Order Automation System** developed as part 
 ## 👥 Contributors
 This project was collaboratively developed by our team:
 * **Shahi Raja Lashkor (2303057):** API Integration Lead & Technical Writer (SSLCommerz Integration, Project Documentation).
-* **Preetom Barmon (2303025):** Project Lead / Backend Developer (Core logic, XML integration).
-* **Md. Sarour Jahan (2303003):** UI/UX Designer (JavaFX GUI, FXML layout).
+* **Md. Sarour Jahan (2303003):** Backend Developer (Core logic).
+* **Preetom Barmon (2303025):** Project Lead / UI/UX Designer (JavaFX GUI, FXML layout).

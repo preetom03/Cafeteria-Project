@@ -34,7 +34,7 @@ public class AdminController implements Initializable{
     private TableColumn<Order, String> itemColumn;
 
     @FXML
-    public void switchMenu(ActionEvent event) throws IOException {
+    public void switchMenu(ActionEvent event) throws IOException { //switches to menu
         Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.getScene().setRoot(root);
@@ -59,13 +59,13 @@ public class AdminController implements Initializable{
         if (!OrderStore.getOrders().isEmpty()) {
             Order completed = OrderStore.getOrders().remove(0);
 
-            System.out.println("Completed Order ID: " + completed.getOrderId());
+            System.out.println("Completed Order ID: " + completed.getOrderId()); //clears the order
         } else {
             System.out.println("No orders in queue");
         }
     }
 
-    private void showError(String m1, String m2, String m3) {
+    private void showError(String m1, String m2, String m3) { //method to show error messages
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(m1);
         alert.setHeaderText(m2);
